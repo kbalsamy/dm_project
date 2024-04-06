@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 ## threshhold function for null values
 def null_threshhold(df, threshhold):
@@ -104,3 +105,33 @@ def get_outliers_columns(df):
         if len(outliers) > 0:
             outliers_columns.append(column)
     return outliers_columns
+
+
+
+
+
+def clustering_scatterplot(points, labels, centers, title):
+
+    # points - a 2D array of (x,y) coordinates of data points
+    # labels - an array of numeric labels in the interval [0..k-1], one for each point
+    # centers - a 2D array of (x, y) coordinates of cluster centers
+    # title - title of the plot
+
+    colors = np.array(['orange', 'blue', 'lime', 'khaki', 'pink', 'green', 'purple'])
+
+    
+    n_clusters = np.unique(labels).size
+    for i in range(n_clusters):
+        h = plt.scatter(points[labels==i,0],
+                        points[labels==i,1], 
+                        c=colors[i%colors.size],
+                        label = 'cluster '+str(i))
+
+    # plot the centers of the clusters
+    if centers is not None:
+        plt.scatter(centers[:,0], centers[:,1], c='r', marker='*', s=500)
+
+    _ = plt.title(title)
+    _ = plt.legend()
+    _ = plt.xlabel('x')
+    _ = plt.ylabel('y')
